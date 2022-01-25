@@ -35,20 +35,13 @@ class TodoController extends _$TodoController {
   ReasultTodos get allTodos => _allTodos;
   @override
   int get schemaVersion => 1;
-  Future<Either<ReasultTodos, Failure>> getTodos() async {
+  getTodos() {
     try {
-      final todoListFromdb = await select(todosFromDb).get();
-      final List<Todo> todoListConvertedFromdb = [];
-      {
-        for (var e in todoListFromdb) {
-          todoListConvertedFromdb.add(
-            convertToTodo(e),
-          );
-        }
-        return Left(ReasultTodos(todoListConvertedFromdb));
-      }
+      final ReasultTodos todoListConvertedFromdb = ReasultTodos([]);
+      final todoListFromdb = select(todosFromDb).watch();
+      return todoListFromdb;
     } catch (e) {
-      return Right(Failure(e.toString()));
+      Failure(e.toString());
     }
   }
 
@@ -57,9 +50,14 @@ class TodoController extends _$TodoController {
         todosFromDbData.content, todosFromDbData.id);
   }
 
+  Stream watchEntriesInCategory(Todo c) {
+    return (select(todosFromDb)).watch();
+  }
+
   Future<Either<int, Failure>> addTodoTodb(TodosFromDbCompanion todo) async {
     try {
       int response = await into(todosFromDb).insert((todo));
+
       return Left(response);
     } catch (e) {
       return Right(

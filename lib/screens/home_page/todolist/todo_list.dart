@@ -12,29 +12,32 @@ class TodoList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: context.read<TodoController>().getTodos().asStream(),
-      builder:
-          (context, AsyncSnapshot<Either<ReasultTodos, Failure>> snapshot) {
+      stream: context.read<TodoController>().getTodos(),
+      builder: (context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
         }
         if (snapshot.hasData) {
-          return snapshot.data!.fold((l) {
-            if (l.todos.isNotEmpty) {
-              return ListView.builder(
-                itemCount: l.todos.length,
-                itemBuilder: (ctx, i) => TodoListTile(
-                  todo: l.todos[i],
-                ),
-              );
-            } else {
-              return const Center(
-                child: Text('Please select add some todos!'),
-              );
-            }
-          }, (r) => Text(r.message));
+          List<Todo> todos = [];
+          (snapshot.data as List).forEach((e) {
+            todos.add(Provider.of<TodoController>(context).convertToTodo(e));
+          });
+          if (todos.isNotEmpty) {
+            return ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (ctx, i) => TodoListTile(
+                todo: todos[i],
+              ),
+            );
+          } else {
+            return const Center(
+              child: Text('Please select add some todos!'),
+            );
+          }
         } else {
-          return const Text('Add some todos !!');
+          return const Center(
+            child: Text('Please select add some todos!'),
+          );
         }
       },
     );

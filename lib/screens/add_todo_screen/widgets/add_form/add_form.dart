@@ -55,12 +55,7 @@ class _AddTodoFormState extends State<AddTodoForm> {
             );
         Navigator.pop(context);
 
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const MyHomePage(),
-          ),
-        );
+    
       } else {
         todoDatabase
             .updateTodo(
@@ -82,13 +77,6 @@ class _AddTodoFormState extends State<AddTodoForm> {
               ),
             );
         Navigator.pop(context);
-
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const MyHomePage(),
-          ),
-        );
       }
     }
   }

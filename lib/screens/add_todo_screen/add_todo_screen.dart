@@ -34,12 +34,7 @@ class AddTodoScreen extends StatelessWidget {
                     );
                 Navigator.pop(context);
 
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MyHomePage(),
-                  ),
-                );
+
               },
               icon: const Icon(Icons.delete),
             ),
@@ -49,12 +44,7 @@ class AddTodoScreen extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
 
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const MyHomePage(),
-              ),
-            );
+
           },
         ),
         centerTitle: true,
