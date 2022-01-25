@@ -10,14 +10,6 @@ class Todo with _$Todo {
       [int? id]) = _Todo;
   factory Todo.fromJson(Map<String, dynamic> json) => _$TodoFromJson(json);
 }
-
-@freezed
-class ReasultTodos with _$ReasultTodos {
-  const factory ReasultTodos(List<Todo> todos) = _ReasultTodos;
-  factory ReasultTodos.fromJson(Map<String, dynamic> json) =>
-      _$ReasultTodosFromJson(json);
-}
-
 TodosFromDbData convertToDatabaseData(Todo todo) {
   return TodosFromDbData(
     content: todo.content,

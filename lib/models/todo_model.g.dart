@@ -19,15 +19,3 @@ Map<String, dynamic> _$$_TodoToJson(_$_Todo instance) => <String, dynamic>{
       'content': instance.content,
       'id': instance.id,
     };
-
-_$_ReasultTodos _$$_ReasultTodosFromJson(Map<String, dynamic> json) =>
-    _$_ReasultTodos(
-      (json['todos'] as List<dynamic>)
-          .map((e) => Todo.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$$_ReasultTodosToJson(_$_ReasultTodos instance) =>
-    <String, dynamic>{
-      'todos': instance.todos,
-    };

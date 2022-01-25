@@ -7,12 +7,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart ' as p;
 import 'package:todo/models/failure.dart';
 import 'package:todo/models/todo_model.dart';
-// assuming that your file is called filename.dart. This will give an error at first,
-// but it's needed for drift to know about the generated code
 part 'database.g.dart';
 
-// this will generate a table called "todos" for us. The rows of that table will
-// be represented by a class called "Todo".
+
 class TodosFromDb extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get title => text()();
@@ -31,13 +28,11 @@ LazyDatabase _openConnection() {
 @DriftDatabase(tables: [TodosFromDb])
 class TodoController extends _$TodoController {
   TodoController() : super(_openConnection());
-  late ReasultTodos _allTodos;
-  ReasultTodos get allTodos => _allTodos;
+
   @override
   int get schemaVersion => 1;
   getTodos() {
     try {
-      final ReasultTodos todoListConvertedFromdb = ReasultTodos([]);
       final todoListFromdb = select(todosFromDb).watch();
       return todoListFromdb;
     } catch (e) {
