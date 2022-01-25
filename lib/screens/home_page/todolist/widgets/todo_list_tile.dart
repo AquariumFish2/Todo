@@ -59,8 +59,10 @@ class TodoListTile extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  todo.content,
+                Expanded(
+                  child: Text(
+                    todo.content,
+                  ),
                 ),
               ],
             ),
