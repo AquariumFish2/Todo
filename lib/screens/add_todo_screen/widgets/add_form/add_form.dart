@@ -34,7 +34,7 @@ class _AddTodoFormState extends State<AddTodoForm> {
     if (addTodoFormKey.currentState!.validate() && doingDate != null) {
       addTodoFormKey.currentState!.save();
       final todoDatabase = Provider.of<TodoController>(context, listen: false);
-      Todo todo = Todo(doingDate as DateTime, title, content);
+      Todo todo = Todo(content, title, doingDate as DateTime);
       if (widget.todo == null) {
         todoDatabase
             .addTodoTodb(
@@ -54,8 +54,6 @@ class _AddTodoFormState extends State<AddTodoForm> {
               ),
             );
         Navigator.pop(context);
-
-    
       } else {
         todoDatabase
             .updateTodo(
@@ -94,82 +92,79 @@ class _AddTodoFormState extends State<AddTodoForm> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context,constrains) {
-        return Form(
-          key: addTodoFormKey,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                AddTodoFormTextField(
-                  multiline: false,
-                  title: 'Todo Title',
-                  addTodoTextEditingController: titleController,
-                  onSaved: (v) {
-                    title = v;
-                  },
-                  onValidate: (String v) {
-                    if (v.isEmpty) return 'enter title';
-                  },
-                ),
-                AddTodoFormTextField(
-                  multiline: true,
-                  title: 'Todo content',
-                  addTodoTextEditingController: contentController,
-                  onSaved: (v) {
-                    content = v;
-                  },
-                  onValidate: (String v) {
-                    if (v.isEmpty) return 'enter some content';
-                  },
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: ElevatedButton(
-                        child: const Text('date'),
-                        onPressed: () {
-                          showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime(2030),
-                          ).then(
-                            (date) {
-                              setState(
-                                () {
-                                  doingDate = date;
-                                },
-                              );
-                            },
-                          );
-                        },
-                      ),
+    
+      return Form(
+        key: addTodoFormKey,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AddTodoFormTextField(
+                multiline: false,
+                title: 'Todo Title',
+                addTodoTextEditingController: titleController,
+                onSaved: (v) {
+                  title = v;
+                },
+                onValidate: (String v) {
+                  if (v.isEmpty) return 'enter title';
+                },
+              ),
+              AddTodoFormTextField(
+                multiline: true,
+                title: 'Todo content',
+                addTodoTextEditingController: contentController,
+                onSaved: (v) {
+                  content = v;
+                },
+                onValidate: (String v) {
+                  if (v.isEmpty) return 'enter some content';
+                },
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: ElevatedButton(
+                      child: const Text('date'),
+                      onPressed: () {
+                        showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(2030),
+                        ).then(
+                          (date) {
+                            setState(
+                              () {
+                                doingDate = date;
+                              },
+                            );
+                          },
+                        );
+                      },
                     ),
-                    Expanded(
-                      flex: 4,
-                      child: (doingDate != null)
-                          ? Text(
-                              DateFormat.yMMMEd().format(doingDate as DateTime),
-                              textAlign: TextAlign.end,
-                            )
-                          : Container(),
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                ElevatedButton(
-                  child: const Text('save'),
-                  onPressed: () => save(context),
-                )
-              ],
-            ),
+                  ),
+                  Expanded(
+                    flex: 4,
+                    child: (doingDate != null)
+                        ? Text(
+                            DateFormat.yMMMEd().format(doingDate as DateTime),
+                            textAlign: TextAlign.end,
+                          )
+                        : Container(),
+                  ),
+                ],
+              ),
+              const Spacer(),
+              ElevatedButton(
+                child: const Text('save'),
+                onPressed: () => save(context),
+              )
+            ],
           ),
-        );
-      }
-    );
+        ),
+      );
   }
 }

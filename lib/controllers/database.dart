@@ -9,12 +9,11 @@ import 'package:todo/models/failure.dart';
 import 'package:todo/models/todo_model.dart';
 part 'database.g.dart';
 
-
 class TodosFromDb extends Table {
-  IntColumn get id => integer().autoIncrement()();
   TextColumn get title => text()();
   TextColumn get content => text().named('body')();
   DateTimeColumn get doingDate => dateTime()();
+  IntColumn get id => integer().autoIncrement()();
 }
 
 LazyDatabase _openConnection() {
@@ -31,9 +30,16 @@ class TodoController extends _$TodoController {
 
   @override
   int get schemaVersion => 1;
+
   getTodos() {
     try {
       final todoListFromdb = select(todosFromDb).watch();
+      print(todoListFromdb.isEmpty.then((value) => print(value)));
+      todoListFromdb.forEach(
+        (element) {
+          print(element);
+        },
+      );
       return todoListFromdb;
     } catch (e) {
       Failure(e.toString());
@@ -41,8 +47,7 @@ class TodoController extends _$TodoController {
   }
 
   Todo convertToTodo(TodosFromDbData todosFromDbData) {
-    return Todo(todosFromDbData.doingDate, todosFromDbData.title,
-        todosFromDbData.content, todosFromDbData.id);
+    return Todo.fromJson(todosFromDbData.toJson());
   }
 
   Stream watchEntriesInCategory(Todo c) {
