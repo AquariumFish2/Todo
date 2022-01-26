@@ -45,15 +45,9 @@ class TodoController extends _$TodoController {
       Failure(e.toString());
     }
   }
-
-  Todo convertToTodo(TodosFromDbData todosFromDbData) {
-    return Todo.fromJson(todosFromDbData.toJson());
-  }
-
   Stream watchEntriesInCategory(Todo c) {
     return (select(todosFromDb)).watch();
   }
-
   Future<Either<int, Failure>> addTodoTodb(TodosFromDbCompanion todo) async {
     try {
       int response = await into(todosFromDb).insert((todo));
